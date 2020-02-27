@@ -86,10 +86,10 @@ kernel3 = make_blur_kernel(7)
 
 def im_filter_gray(A,kernel):
 
-  A = np.zeros((6,6))
-  for i in range(6):
-    for j in range(6):
-      A[i][j]=18
+  #  A = np.zeros((6,6))
+#  for i in range(6):
+#    for j in range(6):
+#      A[i][j]=18
 
   (mi,ni) = A.shape
   (mk,nk) = kernel.shape
@@ -100,23 +100,20 @@ def im_filter_gray(A,kernel):
     for j in range(ni):
       Z[i+mk//2][j+nk//2]=A[i][j]
 
-  print(Z)
-  # plt.imshow(Z)
-  # plt.show()
+  plt.imshow(Z)
+  plt.show()
 
-  for i in range(mi):
-    for j in range(ni):
-      print(Z[i][j],end=" ")
-    print()
+#  for i in range(mi):
+#    for j in range(ni):
+#      print(Z[i][j],end=" ")
+#    print()
 
   for i in range(mi):
     for j in range(ni):
       acc=0
-      # print(); print(); print()
       for k in range(mk):
         for l in range(nk):
           acc+=Z[i+k][j+l]*kernel[k][l]
-      # print("acc: "+str(acc))
       tmp[i+mk//2][j+nk//2]=acc
 
   # Z = np.zeros((mi+mk,ni+nk))
@@ -125,9 +122,8 @@ def im_filter_gray(A,kernel):
       A[i][j]=tmp[i+mk//2][j+nk//2]
 
   print(A)
-  # plt.imshow(A)
-  # plt.show()
-
+  plt.imshow(A)
+  plt.show()
 
 def my_imfilter(filename,kernel): # ,mode,boundary):
   A = color.rgb2gray(io.imread(filename))
