@@ -47,50 +47,21 @@ def make_blur_kernel(dim):
   return blur
 kernel3 = make_blur_kernel(7)
 
-
-# def im_filter_color(image,kernel):
-#   plt.imshow(A)
-#   plt.show()
-# 
-#   (mi,ni,ki) = A.shape
-#   (mk,nk,kk) = kernel.shape
-# 
-#   Z = np.zeros((mi+mk,ni+nk,ki+kk))
-#   for i in range(mi):
-#     for j in range(ni):
-#       for k in range(ki):
-#         Z[i+mk//2][j+nk//2][k+kk//2]=A[i][j][k]
-# 
-#   plt.imshow(Z)
-#   plt.show()
-# 
-#   for p in range(ki):
-#     for i in range(mi):
-#       for j in range(ni):
-#         acc=0
-#         for k in range(mk):
-#           for l in range(nk):
-#             acc+=Z[p][i+k][j+l]*kernel[p][k][l]
-#         # print("acc: "+str(acc))
-#         Z[p][i+mk//2][j+nk//2]=acc
-# 
-#   for i in range(mi):
-#     for j in range(ni):
-#       for k in range(ki):
-#         A[i][j][k]=Z[i+mk//2][j+nk//2][k+kk//2]
-# 
-#   plt.imshow(A)
-#   plt.show()
-#   return 0
-#   
-
+def rgb2gray(A):
+  print("dimensions: ")
+  print(A.shape)
+  (a, b, c) = A.shape
+  ret = np.zeros((a, b))
+  for j in range(a):
+    for k in range(b):
+      acc=0
+      for i in range(c):
+        acc+=A[j][k][i]
+      acc/=c
+      ret[j][k]=acc
+  return ret
 
 def im_filter_gray(A,kernel):
-
-  #  A = np.zeros((6,6))
-#  for i in range(6):
-#    for j in range(6):
-#      A[i][j]=18
 
   (mi,ni) = A.shape
   (mk,nk) = kernel.shape
@@ -104,11 +75,6 @@ def im_filter_gray(A,kernel):
   plt.imshow(Z)
   plt.show()
 
-#  for i in range(mi):
-#    for j in range(ni):
-#      print(Z[i][j],end=" ")
-#    print()
-
   for i in range(mi):
     for j in range(ni):
       acc=0
@@ -117,27 +83,27 @@ def im_filter_gray(A,kernel):
           acc+=Z[i+k][j+l]*kernel[k][l]
       tmp[i+mk//2][j+nk//2]=acc
 
-  # Z = np.zeros((mi+mk,ni+nk))
   for i in range(mi):
     for j in range(ni):
       A[i][j]=tmp[i+mk//2][j+nk//2]
 
-  print(A)
+  # print(A)
   plt.imshow(A)
   plt.show()
 
 def my_imfilter(filename,kernel): # ,mode,boundary):
-  from PIL import Image
-  image = Image.open(FILE).convert("L")
   A = io.imread(FILE)
   plt.imshow(A)
   plt.show()
 
+  # print("shape of A: "+str(len(A.shape)))
+  if(len(A.shape)==3):
+    A=rgb2gray(A)
   if(len(A.shape)==2): im_filter_gray(A,kernel)
   if(len(A.shape)==3): im_filter_color(A,kernel)
 
-  # https://docs.scipy.org/doc/numpy/reference/generated/numpy.stack.html
 for FILE in sys.argv[1:]:
+  print("file: "+FILE)
   # my_imfilter(FILE,kernel3)
   my_imfilter(FILE,sharpen)
 
