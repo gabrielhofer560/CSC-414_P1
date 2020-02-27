@@ -45,8 +45,6 @@ def my_imfilter(image,kernel,filename): # ,mode,boundary):
 #  for i in range(9):
 #    for j in range(9):
 #      A[i][j]= 9*9/2
-   
-
   
   # print("this is A: ")
   # print(A)
@@ -79,8 +77,13 @@ def my_imfilter(image,kernel,filename): # ,mode,boundary):
       # print("acc: "+str(acc))
       Z[i+mk//2][j+nk//2]=acc
 
+  # Z = np.zeros((mi+mk,ni+nk))
+  for i in range(mi):
+    for j in range(ni):
+      A[i][j]=Z[i+mk//2][j+nk//2]
+
   # print(Z)
-  plt.imshow(Z)
+  plt.imshow(A)
   plt.show()
 
 for FILE in sys.argv[1:]:
