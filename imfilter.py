@@ -84,6 +84,7 @@ kernel3 = make_blur_kernel(7)
 #   return 0
 #   
 
+
 def im_filter_gray(A,kernel):
 
   #  A = np.zeros((6,6))
@@ -126,7 +127,12 @@ def im_filter_gray(A,kernel):
   plt.show()
 
 def my_imfilter(filename,kernel): # ,mode,boundary):
-  A = color.rgb2gray(io.imread(filename))
+  from PIL import Image
+  image = Image.open(FILE).convert("L")
+  A = io.imread(FILE)
+  plt.imshow(A)
+  plt.show()
+
   if(len(A.shape)==2): im_filter_gray(A,kernel)
   if(len(A.shape)==3): im_filter_color(A,kernel)
 
