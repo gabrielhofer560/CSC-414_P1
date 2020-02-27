@@ -8,6 +8,7 @@ from skimage import img_as_float32
 import sys
 import matplotlib.image as mpimg
 from skimage import color
+import cv2
 
 indentity = np.array([
     [0,0,0],
@@ -64,7 +65,10 @@ def rgb2gray(A):
   return ret
 
 #--------------------------------------------------------------------
-def im_filter_gray(A,kernel):
+def imfilter2(A,kernel):
+
+  print(kernel)
+
   (mi,ni) = A.shape
   (mk,nk) = kernel.shape
   Z = np.zeros((mi+mk,ni+nk))
@@ -75,30 +79,57 @@ def im_filter_gray(A,kernel):
   for i in range(mi):
     for j in range(ni):
       acc=0
+      # print("orig: "+str(Z[i+mk//2][j+nk//2]))
       for k in range(mk):
         for l in range(nk):
-          acc+=Z[i+k][j+l]*kernel[k][l]
-      tmp[i+mk//2][j+nk//2]=acc
+          acc+=(Z[i+k][j+l]*kernel[k][l])
+      # print("acc: "+str(acc))
+      tmp[i][j]=acc
+
   for i in range(mi):
     for j in range(ni):
-      A[i][j]=tmp[i+mk//2][j+nk//2] 
+      A[i][j]=tmp[i+mk//2][j+nk//2]
   return A
 
 #--------------------------------------------------------------------
-def my_imfilter(filename,kernel): # ,mode,boundary):
-  A = io.imread(filename)
+def sharp(A,kernel):
+  print(kernel)
+
+  (mi,ni) = A.shape
+  (mk,nk) = kernel.shape
+  Z = np.zeros((mi+mk,ni+nk))
+  tmp = np.zeros((mi,ni))
+  for i in range(mi-mk):
+    for j in range(ni-nk):
+      acc=0
+      for k in range(mk):
+        for l in range(nk):
+          acc+=(A[i+k][j+l]*kernel[k][l])
+      tmp[i][j]=acc
+  for i in range(mi):
+    for j in range(ni):
+      A[i][j]=tmp[i][j]
+  return A
+
+#--------------------------------------------------------------------
+def imfilter(filename,kernel): # ,mode,boundary):
+  A = cv2.imread(filename)
+
+  plt.imshow(A)
+  plt.show()
+
   if(len(A.shape)==2): 
     im_filter_gray(A,kernel)
   if(len(A.shape)>2): 
     for i in range(A.shape[2]):
-      A[:,:,i] = im_filter_gray(A[:,:,i],kernel)
+      A[:,:,i] = imfilter2(A[:,:,i],kernel)
+      #A[:,:,i] = im_filter_gray(A[:,:,i],kernel)
   return A
 
 #--------------------------------------------------------------------
 def main():
   for FILE in sys.argv[1:]:
-    B = my_imfilter(FILE,emboss)
-
+    B = imfilter(FILE,sharpen)
     io.imsave("out.png",B)
     plt.imshow(B)
     plt.show()
