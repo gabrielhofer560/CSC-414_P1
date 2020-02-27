@@ -22,9 +22,6 @@ kernel0 = np.array([
 kernel2 = np.zeros((5,5))
 kernel2[2][2]=1
 
-print("this is kernel2: ")
-print(kernel2)
-
 kernel1 = np.array([
     [1/9,1/9,1/9],
     [1/9,1/9,1/9],
@@ -34,24 +31,25 @@ kernel1 = np.array([
 def make_blur_kernel(dim):
   blur = np.full((dim,dim),1/(dim*dim))
   return blur
-
 kernel3 = make_blur_kernel(7)
 
-
-# def make_kernel(dim):
 def my_imfilter(image,kernel,filename): # ,mode,boundary):
 
   # https://docs.scipy.org/doc/numpy/reference/generated/numpy.stack.html
-
   A = io.imread(filename)
+
+  # print("kernel3: ")
+  # print(kernel3)
+
+#  A = np.zeros((9,9))
+#  for i in range(9):
+#    for j in range(9):
+#      A[i][j]= 9*9/2
    
-  print(A.shape)
-  print(len(A.shape))
 
-  print(kernel0)
-
-  print(kernel0.shape)
-  print(len(kernel0.shape))
+  
+  # print("this is A: ")
+  # print(A)
 
   if(len(A.shape)==2):
     (mi,ni) = A.shape
@@ -68,6 +66,7 @@ def my_imfilter(image,kernel,filename): # ,mode,boundary):
     for j in range(ni):
       Z[i+mk//2][j+nk//2]=A[i][j]
 
+  # print(Z)
   plt.imshow(Z)
   plt.show()
 
@@ -76,8 +75,11 @@ def my_imfilter(image,kernel,filename): # ,mode,boundary):
       acc=0
       for k in range(mk):
         for l in range(nk):
-          acc+=Z[mk//2+i][nk//2+j]*kernel[k][l]
+          acc+=Z[i+k][j+l]*kernel[k][l]
+      # print("acc: "+str(acc))
+      Z[i+mk//2][j+nk//2]=acc
 
+  # print(Z)
   plt.imshow(Z)
   plt.show()
 
