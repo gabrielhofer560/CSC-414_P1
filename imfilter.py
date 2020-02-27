@@ -39,7 +39,7 @@ left_sobel = np.array([
   [1,0,-1]
   ])
 
-edge = np.array([
+outline = np.array([
   [-1,-1,-1],
   [-1,8,-1],
   [-1,-1,-1]
@@ -130,7 +130,7 @@ def imfilter(filename,kernel): # ,mode,boundary):
 #--------------------------------------------------------------------
 def main():
   for FILE in sys.argv[1:]:
-    B = imfilter(FILE,left_sobel)
+    B = imfilter(FILE,outline)
     io.imsave("out.png",B)
     plt.imshow(B)
     plt.show()
