@@ -96,9 +96,16 @@ def my_imfilter(filename,kernel): # ,mode,boundary):
   plt.imshow(A)
   plt.show()
 
+  import matplotlib.image as mpimg
+  A = mpimg.imread(FILE) 
+
   # print("shape of A: "+str(len(A.shape)))
   if(len(A.shape)==3):
     A=rgb2gray(A)
+
+  plt.imshow(A, cmap=plt.get_cmap('gray'))
+  plt.show()
+
   if(len(A.shape)==2): im_filter_gray(A,kernel)
   if(len(A.shape)==3): im_filter_color(A,kernel)
 
