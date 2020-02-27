@@ -5,6 +5,10 @@
 
 # http://cs.brown.edu/courses/csci1430/2013/results/proj1/
 # http://cs.brown.edu/courses/csci1430/2013/results/proj1/xl76/
+
+# mode 
+# boundary 
+
 import time
 import skimage
 from skimage import io
@@ -12,6 +16,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from skimage import img_as_float32
 import sys
+
+from skimage import color
+# img = color.rgb2gray(io.imread('image.png'))
+# https://stackoverflow.com/questions/12201577/how-can-i-convert-an-rgb-image-into-grayscale-in-python
 
 # https://docs.scipy.org/doc/numpy/user/basics.creation.html
 kernel0 = np.array([
@@ -33,31 +41,48 @@ def make_blur_kernel(dim):
   return blur
 kernel3 = make_blur_kernel(7)
 
-def my_imfilter(image,kernel,filename): # ,mode,boundary):
 
-  # https://docs.scipy.org/doc/numpy/reference/generated/numpy.stack.html
-  A = io.imread(filename)
+def im_filter_color(image,kernel):
+  plt.imshow(A)
+  plt.show()
 
-  # print("kernel3: ")
-  # print(kernel3)
+  (mi,ni,ki) = A.shape
+  (mk,nk,kk) = kernel.shape
 
-#  A = np.zeros((9,9))
-#  for i in range(9):
-#    for j in range(9):
-#      A[i][j]= 9*9/2
-  
-  # print("this is A: ")
-  # print(A)
+  Z = np.zeros((mi+mk,ni+nk,ki+kk))
+  for i in range(mi):
+    for j in range(ni):
+      for k in range(ki):
+        Z[i+mk//2][j+nk//2][k+kk//2]=A[i][j][k]
 
-  if(len(A.shape)==2):
-    (mi,ni) = A.shape
-    (mk,nk) = kernel.shape
-  if(len(A.shape)==3):
-    (mi,ni,ki) = A.shape
-    (mk,nk,kk) = kernel.shape
+  plt.imshow(Z)
+  plt.show()
+
+  for p in range(ki):
+    for i in range(mi):
+      for j in range(ni):
+        acc=0
+        for k in range(mk):
+          for l in range(nk):
+            acc+=Z[p][i+k][j+l]*kernel[p][k][l]
+        # print("acc: "+str(acc))
+        Z[p][i+mk//2][j+nk//2]=acc
+
+  for i in range(mi):
+    for j in range(ni):
+      for k in range(ki):
+        A[i][j][k]=Z[i+mk//2][j+nk//2][k+kk//2]
 
   plt.imshow(A)
   plt.show()
+  return 0
+  
+def im_filter_gray(A,kernel):
+  plt.imshow(A)
+  plt.show()
+
+  (mi,ni) = A.shape
+  (mk,nk) = kernel.shape
 
   Z = np.zeros((mi+mk,ni+nk))
   for i in range(mi):
@@ -77,6 +102,8 @@ def my_imfilter(image,kernel,filename): # ,mode,boundary):
       # print("acc: "+str(acc))
       Z[i+mk//2][j+nk//2]=acc
 
+
+
   # Z = np.zeros((mi+mk,ni+nk))
   for i in range(mi):
     for j in range(ni):
@@ -86,8 +113,15 @@ def my_imfilter(image,kernel,filename): # ,mode,boundary):
   plt.imshow(A)
   plt.show()
 
+
+def my_imfilter(filename,kernel): # ,mode,boundary):
+  A = color.rgb2gray(io.imread(filename))
+  if(len(A.shape)==2): im_filter_gray(A,kernel)
+  if(len(A.shape)==3): im_filter_color(A,kernel)
+
+  # https://docs.scipy.org/doc/numpy/reference/generated/numpy.stack.html
 for FILE in sys.argv[1:]:
-  my_imfilter(FILE,kernel3,FILE)
+  my_imfilter(FILE,kernel3)
 
 
 
