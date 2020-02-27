@@ -36,82 +36,97 @@ kernel1 = np.array([
     [1/9,1/9,1/9]
     ])
 
+sharpen = np.array([
+  [0,-1,0],
+  [-1,5,-1],
+  [0,-1,0]
+  ])
+
 def make_blur_kernel(dim):
   blur = np.full((dim,dim),1/(dim*dim))
   return blur
 kernel3 = make_blur_kernel(7)
 
 
-def im_filter_color(image,kernel):
-  plt.imshow(A)
-  plt.show()
+# def im_filter_color(image,kernel):
+#   plt.imshow(A)
+#   plt.show()
+# 
+#   (mi,ni,ki) = A.shape
+#   (mk,nk,kk) = kernel.shape
+# 
+#   Z = np.zeros((mi+mk,ni+nk,ki+kk))
+#   for i in range(mi):
+#     for j in range(ni):
+#       for k in range(ki):
+#         Z[i+mk//2][j+nk//2][k+kk//2]=A[i][j][k]
+# 
+#   plt.imshow(Z)
+#   plt.show()
+# 
+#   for p in range(ki):
+#     for i in range(mi):
+#       for j in range(ni):
+#         acc=0
+#         for k in range(mk):
+#           for l in range(nk):
+#             acc+=Z[p][i+k][j+l]*kernel[p][k][l]
+#         # print("acc: "+str(acc))
+#         Z[p][i+mk//2][j+nk//2]=acc
+# 
+#   for i in range(mi):
+#     for j in range(ni):
+#       for k in range(ki):
+#         A[i][j][k]=Z[i+mk//2][j+nk//2][k+kk//2]
+# 
+#   plt.imshow(A)
+#   plt.show()
+#   return 0
+#   
 
-  (mi,ni,ki) = A.shape
-  (mk,nk,kk) = kernel.shape
-
-  Z = np.zeros((mi+mk,ni+nk,ki+kk))
-  for i in range(mi):
-    for j in range(ni):
-      for k in range(ki):
-        Z[i+mk//2][j+nk//2][k+kk//2]=A[i][j][k]
-
-  plt.imshow(Z)
-  plt.show()
-
-  for p in range(ki):
-    for i in range(mi):
-      for j in range(ni):
-        acc=0
-        for k in range(mk):
-          for l in range(nk):
-            acc+=Z[p][i+k][j+l]*kernel[p][k][l]
-        # print("acc: "+str(acc))
-        Z[p][i+mk//2][j+nk//2]=acc
-
-  for i in range(mi):
-    for j in range(ni):
-      for k in range(ki):
-        A[i][j][k]=Z[i+mk//2][j+nk//2][k+kk//2]
-
-  plt.imshow(A)
-  plt.show()
-  return 0
-  
 def im_filter_gray(A,kernel):
-  plt.imshow(A)
-  plt.show()
+
+  A = np.zeros((6,6))
+  for i in range(6):
+    for j in range(6):
+      A[i][j]=18
 
   (mi,ni) = A.shape
   (mk,nk) = kernel.shape
 
   Z = np.zeros((mi+mk,ni+nk))
+  tmp = np.zeros((mi+mk,ni+nk))
   for i in range(mi):
     for j in range(ni):
       Z[i+mk//2][j+nk//2]=A[i][j]
 
-  # print(Z)
-  plt.imshow(Z)
-  plt.show()
+  print(Z)
+  # plt.imshow(Z)
+  # plt.show()
+
+  for i in range(mi):
+    for j in range(ni):
+      print(Z[i][j],end=" ")
+    print()
 
   for i in range(mi):
     for j in range(ni):
       acc=0
+      # print(); print(); print()
       for k in range(mk):
         for l in range(nk):
           acc+=Z[i+k][j+l]*kernel[k][l]
       # print("acc: "+str(acc))
-      Z[i+mk//2][j+nk//2]=acc
-
-
+      tmp[i+mk//2][j+nk//2]=acc
 
   # Z = np.zeros((mi+mk,ni+nk))
   for i in range(mi):
     for j in range(ni):
-      A[i][j]=Z[i+mk//2][j+nk//2]
+      A[i][j]=tmp[i+mk//2][j+nk//2]
 
-  # print(Z)
-  plt.imshow(A)
-  plt.show()
+  print(A)
+  # plt.imshow(A)
+  # plt.show()
 
 
 def my_imfilter(filename,kernel): # ,mode,boundary):
@@ -121,9 +136,8 @@ def my_imfilter(filename,kernel): # ,mode,boundary):
 
   # https://docs.scipy.org/doc/numpy/reference/generated/numpy.stack.html
 for FILE in sys.argv[1:]:
-  my_imfilter(FILE,kernel3)
-
-
+  # my_imfilter(FILE,kernel3)
+  my_imfilter(FILE,sharpen)
 
 
 
