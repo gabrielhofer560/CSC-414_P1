@@ -72,23 +72,23 @@ def imfilter2(A,kernel):
   (mi,ni) = A.shape
   (mk,nk) = kernel.shape
   Z = np.zeros((mi+mk,ni+nk))
-  tmp = np.zeros((mi+mk,ni+nk))
+  tmp = np.zeros((mi,ni))
   for i in range(mi):
     for j in range(ni):
       Z[i+mk//2][j+nk//2]=A[i][j]
   for i in range(mi):
     for j in range(ni):
       acc=0
-      # print("orig: "+str(Z[i+mk//2][j+nk//2]))
       for k in range(mk):
         for l in range(nk):
           acc+=(Z[i+k][j+l]*kernel[k][l])
-      # print("acc: "+str(acc))
+      if(acc<0): acc=0
+      if(acc>255): acc=255
       tmp[i][j]=acc
 
   for i in range(mi):
     for j in range(ni):
-      A[i][j]=tmp[i+mk//2][j+nk//2]
+      A[i][j]=tmp[i][j]
   return A
 
 #--------------------------------------------------------------------
@@ -105,6 +105,8 @@ def sharp(A,kernel):
       for k in range(mk):
         for l in range(nk):
           acc+=(A[i+k][j+l]*kernel[k][l])
+      if(acc<0): acc=0
+      if(acc>255): acc=254
       tmp[i][j]=acc
   for i in range(mi):
     for j in range(ni):
@@ -114,22 +116,21 @@ def sharp(A,kernel):
 #--------------------------------------------------------------------
 def imfilter(filename,kernel): # ,mode,boundary):
   A = cv2.imread(filename)
-
+  # A = io.imread(filename) 
   plt.imshow(A)
   plt.show()
 
   if(len(A.shape)==2): 
-    im_filter_gray(A,kernel)
+    imfilter2(A,kernel)
   if(len(A.shape)>2): 
     for i in range(A.shape[2]):
       A[:,:,i] = imfilter2(A[:,:,i],kernel)
-      #A[:,:,i] = im_filter_gray(A[:,:,i],kernel)
   return A
 
 #--------------------------------------------------------------------
 def main():
   for FILE in sys.argv[1:]:
-    B = imfilter(FILE,sharpen)
+    B = imfilter(FILE,left_sobel)
     io.imsave("out.png",B)
     plt.imshow(B)
     plt.show()
