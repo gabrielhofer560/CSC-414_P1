@@ -10,6 +10,7 @@ import matplotlib.image as mpimg
 from skimage import color
 import cv2
 
+### Some Kernels:
 indentity = np.array([
     [0,0,0],
     [0,1,0],
@@ -45,13 +46,11 @@ outline = np.array([
   [-1,-1,-1]
   ])
 
-#--------------------------------------------------------------------
 def make_blur_kernel(dim):
   blur = np.full((dim,dim),1/(dim*dim))
   return blur
 kernel3 = make_blur_kernel(7)
 
-#--------------------------------------------------------------------
 def rgb2gray(A):
   (a, b, c) = A.shape
   ret = np.zeros((a, b))
@@ -64,11 +63,8 @@ def rgb2gray(A):
       ret[j][k]=acc
   return ret
 
-#--------------------------------------------------------------------
 def imfilter2(A,kernel):
-
-  print(kernel)
-
+  #print(kernel)
   (mi,ni) = A.shape
   (mk,nk) = kernel.shape
   Z = np.zeros((mi+mk,ni+nk))
@@ -91,29 +87,6 @@ def imfilter2(A,kernel):
       A[i][j]=tmp[i][j]
   return A
 
-#--------------------------------------------------------------------
-def sharp(A,kernel):
-  print(kernel)
-
-  (mi,ni) = A.shape
-  (mk,nk) = kernel.shape
-  Z = np.zeros((mi+mk,ni+nk))
-  tmp = np.zeros((mi,ni))
-  for i in range(mi-mk):
-    for j in range(ni-nk):
-      acc=0
-      for k in range(mk):
-        for l in range(nk):
-          acc+=(A[i+k][j+l]*kernel[k][l])
-      if(acc<0): acc=0
-      if(acc>255): acc=254
-      tmp[i][j]=acc
-  for i in range(mi):
-    for j in range(ni):
-      A[i][j]=tmp[i][j]
-  return A
-
-#--------------------------------------------------------------------
 def imfilter(filename,kernel): # ,mode,boundary):
   A = cv2.imread(filename)
   # A = io.imread(filename) 
@@ -127,7 +100,6 @@ def imfilter(filename,kernel): # ,mode,boundary):
       A[:,:,i] = imfilter2(A[:,:,i],kernel)
   return A
 
-#--------------------------------------------------------------------
 def main():
   for FILE in sys.argv[1:]:
     B = imfilter(FILE,outline)
@@ -137,6 +109,5 @@ def main():
 
 main()
 
-#--------------------------------------------------------------------
 
 
