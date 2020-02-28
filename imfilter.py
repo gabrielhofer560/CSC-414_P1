@@ -10,47 +10,6 @@ import matplotlib.image as mpimg
 from skimage import color
 import cv2
 
-### Some Kernels:
-indentity = np.array([
-    [0,0,0],
-    [0,1,0],
-    [0,0,0]])
-
-blur = np.array([
-    [1/9,1/9,1/9],
-    [1/9,1/9,1/9],
-    [1/9,1/9,1/9]
-    ])
-
-sharpen = np.array([
-  [0,-1,0],
-  [-1,5,-1],
-  [0,-1,0]
-  ])
-
-emboss = np.array([
-  [-2,-1,0],
-  [-1,1,1],
-  [0,1,2]
-  ])
-
-left_sobel = np.array([
-  [1,0,-1],
-  [2,0,-2],
-  [1,0,-1]
-  ])
-
-outline = np.array([
-  [-1,-1,-1],
-  [-1,8,-1],
-  [-1,-1,-1]
-  ])
-
-def make_blur_kernel(dim):
-  blur = np.full((dim,dim),1/(dim*dim))
-  return blur
-kernel3 = make_blur_kernel(7)
-
 def rgb2gray(A):
   (a, b, c) = A.shape
   ret = np.zeros((a, b))
@@ -85,7 +44,7 @@ def imfilter2(A,kernel):
       A[i][j]=tmp[i][j]
   return A
 
-def imfilter(A,kernel): # ,mode,boundary):
+def imfilter(A,kernel): 
   if kernel.shape[0]%2==0 or kernel.shape[1]%2==0 : 
     print("Error: Invalid kernel dimensions. Quitting...")
     return A
