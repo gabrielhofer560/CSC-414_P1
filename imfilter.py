@@ -64,7 +64,6 @@ def rgb2gray(A):
   return ret
 
 def imfilter2(A,kernel):
-  #print(kernel)
   (mi,ni) = A.shape
   (mk,nk) = kernel.shape
   Z = np.zeros((mi+mk,ni+nk))
@@ -88,8 +87,11 @@ def imfilter2(A,kernel):
   return A
 
 def imfilter(filename,kernel): # ,mode,boundary):
-  A = cv2.imread(filename)
-  # A = io.imread(filename) 
+  if kernel.shape[0]&1 || kernel.shape[1]&1 : 
+    print("Error: Invalid kernel dimensions. Quitting...")
+    return A
+  A = cv2.imread(filename)   # for not color?
+  # A = io.imread(filename)  # for color?
   plt.imshow(A)
   plt.show()
 
