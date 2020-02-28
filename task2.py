@@ -14,26 +14,50 @@ import sys
 
 from gaussian import gauss
 from imfilter import imfilter
+import cv2
 
 
-def high(img,sig):
-  print("SIG: "+str(sig))
-  return imfilter(img,gauss(3,3,sig,1))
+def hybrid(A,B,sigH,sigL):
 
-def low(img,sig):
-  return imfilter(img,gauss(3,3,sig,0))
+  h=imfilter(A, gauss(3,3,sigH))
+  l=imfilter(B, gauss(3,3,sigL))
 
-def hybrid(im1,im2,sigH,sigL):
-  h=high(im1,sigH)
-  l=low(im2,sigL)
-  return high(im1,sigH) + high(im2,sigL)
+  A = io.imread(sys.argv[1])   
+  h= A-h
+
+  #B = io.imread(sys.argv[2])
+  #l= B-l
+
+#  C = h < 0
+#  h[C] = 0
+#  D = h > 255
+#  h[D] = 255
+
+  for i in range(h.shape[0]):
+    for j in range(h.shape[1]):
+      for k in range(h.shape[2]):
+        h[i][j][k] = h[i][j][k]/2
+        l[i][j][k] = l[i][j][k]/2
+
+  result = l + h
+
+  io.imshow(result)
+  io.show()
+
+  io.imsave("high.png",h)
+  io.imsave("low.png",l)
+  return h+l
 
 def main():
   print("opening files: "+str(sys.argv[1])+", "+str(sys.argv[2]))
   sigH=int(input("sigma high: "))
   sigL=int(input("sigma low: "))
-  result = hybrid(sys.argv[1],sys.argv[2],sigH,sigL)
-  io.imsave("task2_out.png")
+
+  A = io.imread(sys.argv[1])   # for not color?
+  B = io.imread(sys.argv[2])   # for not color?
+
+  result = hybrid(A,B,sigH,sigL)
+  io.imsave("out.png",result)
 
 main()
 

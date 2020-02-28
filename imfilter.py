@@ -80,21 +80,15 @@ def imfilter2(A,kernel):
       if(acc<0): acc=0
       if(acc>255): acc=255
       tmp[i][j]=acc
-
   for i in range(mi):
     for j in range(ni):
       A[i][j]=tmp[i][j]
   return A
 
-def imfilter(filename,kernel): # ,mode,boundary):
-  A = cv2.imread(filename)   # for not color?
+def imfilter(A,kernel): # ,mode,boundary):
   if kernel.shape[0]%2==0 or kernel.shape[1]%2==0 : 
     print("Error: Invalid kernel dimensions. Quitting...")
     return A
-  # A = io.imread(filename)  # for color?
-  plt.imshow(A)
-  plt.show()
-
   if(len(A.shape)==2): 
     imfilter2(A,kernel)
   if(len(A.shape)>2): 
@@ -104,7 +98,9 @@ def imfilter(filename,kernel): # ,mode,boundary):
 
 def main():
   for FILE in sys.argv[1:]:
-    B = imfilter(FILE,outline)
+    A = cv2.imread(filename)   # for not color?
+  # A = io.imread(filename)  # for color?
+    B = imfilter(A,outline)
     io.imsave("out.png",B)
     plt.imshow(B)
     plt.show()
