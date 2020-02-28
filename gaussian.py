@@ -1,32 +1,9 @@
 # https://www.geeksforgeeks.org/gaussian-filter-generation-c/
-# 
 import numpy as np
 import math
-# 
-# def makeGaussianFilter(rows, cols, sigma, highPass=True):
-#   midrow = (rows+1)//2
-#   midcol = (cols+1)//2
-# 
-# #  centerI = int(numRows/2) + 1 if numRows % 2 == 1 else int(numRows/2)
-# #  centerJ = int(numCols/2) + 1 if numCols % 2 == 1 else int(numCols/2)
-# 
-#   def gaussian(i,j):
-#     coefficient = math.exp(-1.0 * ((i - midrow)**2 + (j - midcol)**2) / (2 * sigma**2))
-#     return 1 - coefficient if highPass else coefficient
-# 
-#   return np.array([[gaussian(i,j) for j in range(cols)] for i in range(rows)])
-# 
-# 
-# 
-# sigma = 255//2
-# rows = int(input("Rows? "))
-# cols = int(input("Cols? "))
-# 
-# arr = makeGaussianFilter(rows,cols,sigma)
-# print("Guassian Filter")
-# print(arr)
 
-def gauss(k, r, c, sigma):
+def gauss(r, c, sigma, highPass):
+  k=np.zeros((r,c))
   rows,cols=r,c
   s=2.0*sigma*sigma
   cr=r//2
@@ -36,24 +13,39 @@ def gauss(k, r, c, sigma):
   for i in range(-cr,cr+1):
     for j in range(-cc,cc+1):
       r=math.sqrt(i*i+j*j)
-      k[i+cr][j+cc]=math.exp(-r*r/s)/(math.pi*s) 
+      if highPass: k[i+cr][j+cc]=1-math.exp(-r*r/s)/(math.pi*s) 
+      else : k[i+cr][j+cc]=math.exp(-r*r/s)/(math.pi*s) 
       sum+=k[i+cr][j+cc]
-
-  print(type(r))
-  print(type(c))
-
   for i in range(rows):
     for j in range(cols):
       k[i][j]/=sum
   return k
 
-sigma = 255//2
-rows = int(input("Rows? "))
-cols = int(input("Cols? "))
-arr = np.zeros((rows,cols))
-arr = gauss(arr,rows,cols,1.0)
-print("Guassian Filter")
-print(arr)
+
+def main():
+  sigma = 255//2 
+  rows = int(input("Rows? "))
+  cols = int(input("Cols? "))
+  h = int(input("high pass? "))
+  arr = np.zeros((rows,cols))
+  arr = gauss(rows,cols,128,h)
+  print("Guassian Filter")
+  print(arr)
+
+ 
+
+
+
+# main()
+
+
+
+
+
+
+
+
+
 
 
 

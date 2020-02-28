@@ -12,7 +12,6 @@ from skimage import io
 def scaleSpectrum(A):
   return numpy.real(numpy.log10(numpy.absolute(A) + numpy.ones(A.shape)))
 
-
 # sample values from a spherical gaussian function from the center of the image
 def makeGaussianFilter(numRows, numCols, sigma, highPass=True):
   centerI = int(numRows/2) + 1 if numRows % 2 == 1 else int(numRows/2)
@@ -69,8 +68,5 @@ if __name__ == "__main__":
 
   hybrid = hybridImage(einstein, marilyn, 25, 10)
   io.imsave("marilyn-einstein.png", numpy.real(hybrid))
-
-
-
 
 

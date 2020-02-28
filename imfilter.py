@@ -87,10 +87,10 @@ def imfilter2(A,kernel):
   return A
 
 def imfilter(filename,kernel): # ,mode,boundary):
-  if kernel.shape[0]&1 || kernel.shape[1]&1 : 
+  A = cv2.imread(filename)   # for not color?
+  if kernel.shape[0]%2==0 or kernel.shape[1]%2==0 : 
     print("Error: Invalid kernel dimensions. Quitting...")
     return A
-  A = cv2.imread(filename)   # for not color?
   # A = io.imread(filename)  # for color?
   plt.imshow(A)
   plt.show()
@@ -109,7 +109,7 @@ def main():
     plt.imshow(B)
     plt.show()
 
-main()
+# main()
 
 
 
