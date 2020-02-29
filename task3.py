@@ -16,28 +16,31 @@ from task2 import hybrid2
 
 def task3():
   n=input("Option(1,2): ")
-  print("n: "+str(n))
   if n=="1":
-    print("1")
     hyb=hybrid1(sys.argv[1],sys.argv[2],1.0,1.0)
     io.imshow(hyb)
     io.show()
   else:
-    print("2")
     hyb=hybrid2(sys.argv[1],sys.argv[2],1.0,1.0)
     io.imshow(hyb)
     io.show()
 
+  io.imsave("bikes1.png",hyb)
   hyb=cv2.pyrDown(hyb)
   io.imshow(hyb)
   io.show()
  
+  io.imsave("bikes2.png",hyb)
   hyb=cv2.pyrDown(hyb)
   io.imshow(hyb)
   io.show()
 
+  io.imsave("bikes3.png",hyb)
   hyb=cv2.pyrDown(hyb)
   io.imshow(hyb)
   io.show()
+
+  io.imsave("bikes4.png",hyb)
+
 
 task3()

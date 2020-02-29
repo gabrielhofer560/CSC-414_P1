@@ -13,20 +13,19 @@ import sys
 
 from gaussian import gauss
 from imfilter import imfilter
-import cv2
 
 def hybrid2(F1,F2,sigH,sigL):
   A = io.imread(F1)   # for not color?
   B = io.imread(F2)   # for not color?
-  l=imfilter(A, gauss(5,5,sigH))
-  h=imfilter(B, gauss(5,5,sigL))
+  l=imfilter(A, gauss(7,7,sigH))
+  h=imfilter(B, gauss(7,7,sigL))
   A = io.imread(F1)
   l = A-l
   for i in range(h.shape[0]):
     for j in range(h.shape[1]):
       for k in range(h.shape[2]):
-        h[i][j][k] = h[i][j][k]/2
         l[i][j][k] = l[i][j][k]/2
+        h[i][j][k] = h[i][j][k]/2
   return (l + h)
 
 def main():

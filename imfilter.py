@@ -8,7 +8,7 @@ from skimage import img_as_float32
 import sys
 import matplotlib.image as mpimg
 from skimage import color
-import cv2
+#import cv2
 
 def imfilter2(A,kernel):
   (mi,ni) = A.shape

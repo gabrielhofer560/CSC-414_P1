@@ -13,7 +13,6 @@ import sys
 
 from gaussian import gauss
 from imfilter import imfilter
-import cv2
 
 def filterFFT(imageMatrix, kernel):
    shifted = fftshift(fft2(imageMatrix))

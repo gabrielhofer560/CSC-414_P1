@@ -38,235 +38,35 @@
    \end{center}
 \end{titlepage}
 %------------------------------------------------------------------------------------
-
-
 \newpage
-\section{Overview}
-From the writeup: 
-"We will write an image convolution function (image filtering) and use it to create hybrid
-images! The technique was invented by Oliva, Torralba, and Schyns in 2006, and published
-in a paper at SIGGRAPH (available on D2L in the project1 directory tree). High frequency
-image content tends to dominate perception but, at a distance, only low frequency (smooth)
-content is perceived. By blending high and low frequency content, we can create a hybrid
-image that is perceived differently at different distances."
-
-\section{Image Filtering}
-
-\subsection{Task}
-\textbf{Implement convolution in my imfilter(image,kernal,mode,boundary)
-to imitate convolution in scipy’s convolv2d function. Your filtering algorithm should:}
-\begin{itemize}
-  \item Pad the input image with zeros if need be.
-  \item Support grayscale and color images.
-  \item Support arbitrary shaped odd-dimension kernels (e.g., 7x9 filters but not 4x5 filters).
-  \item Return an error message for even-dimension filters (i.e., filters who’s dimensions are
-  \item even number), as their output is undefined.
-  \item Return an identical image with an identity (impulse response) kernel.
-  \item Return a filtered image which is the same size and resolution as the input image.
-\end{itemize}
-
-% https://laurentperrinet.github.io/sciblog/posts/2017-09-20-the-fastest-2d-convolution-in-the-world.html
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\section{Hybrid Images}
-
-\subsection{Task 1}
-
-\subsection{Task 2}
-
-\subsection{Task 3}
-
 \section{Questions}
 \textbf{Q1: Explicitly describe image convolution: the input, the transformation, and the output.
-Why is it useful for computer vision?}
+Why is it useful for computer vision?} 
 
+Image convolution uses a kernel that is applied to each pixel in the image to create a new image.
+A kernel is used to view neighboring cells in the image and calculate a new pixel value for the 
+resulting image.
 
 \textbf{Q2: What is the difference between convolution and correlation? Construct a scenario that
 produces a different output between both operations and show some images of the result.
 (you can use built in correlation functions and convolution functions in scipy here if
-desired).}
+desired).}  
 
-% add a citation for this -- find citation somewhere on google scholar
-% https://www.mathworks.com/matlabcentral/answers/264746-difference-between-convolution-and-correlation
-"Theoretically, convolution are linear operations on the signal or signal modifiers, whereas correlation is a measure of similarity between two signals."
+Convolution takes two images and produces a new third image. Convolution is also a mathematical
+operation that takes to functions and creates a third function.
+Correlation measures the displacement of one signal relative to the other signal. It measures 
+similarity of two images.
+Correlation is similar to convolution.  
 
 \textbf{Q3: What is the difference between a high pass filter and a low pass filter in how they
 are constructed and what they do to the image? Please provide example kernels and output
-images.}
+images.} 
 
-The main difference is the range of frequency that they allow to pass through it.
-% https://electronicscoach.com/difference-between-high-pass-and-low-pass-filter.html
-Architecture:
-
-
-
-
-% 
-% 
-% \section{Questions}
-% \small
-% \textbf{1. We wish to set all pixels that have a value of 10 or less to 0, to remove camera
-% sensor noise. However, our code is slow when run on a database with 1000
-% grayscale images.}
-% 
-% \textbf{(a) How could we speed it up? Please include your code.}
-% 
-% From the CSC-414 Python Tutorial: 
-% "Since NumPy is an extension for Python that is written in C, NumPy operations are faster than
-% their corresponding Python equivalents. For example, performing matrix multiplication of two
-% NumPy arrays is faster than iterating through two Python lists representing arrays and multiplying
-% the correct elements. As such, we recommend doing as much of your calculations in NumPy
-% as possible. It is best to avoid using for loops whenever possible; one can attain significant
-% performance improvements through vectorization and logical indexing."
-% 
-% % --- my answer ---
-% \begin{lstlisting}[frame=single,language=Python,caption=Slower For Loops with Greyscale Image\label{code:grayscale_slow}]
-% import time
-% import skimage
-% from skimage import io
-% import numpy as np
-% import matplotlib.pyplot as plt
-% from skimage import img_as_float32
-% import sys
-% 
-% def process(file):
-%   A = io.imread(file)
-%   (m1,n1) = A.shape
-%   for i in range(m1):
-%     for j in range(n1):
-%       if A[i,j] <= 10 :
-%         A[i,j] = 0
-% 
-% start = time.time()
-% for file in sys.argv[1:]:
-%   process(file)
-% end = time.time()
-% print("total time: "+str(end - start))
-% \end{lstlisting}
-% \newpage
-% \begin{lstlisting}[frame=single,language=Python,caption=Logical Indexing with Greyscale Image\label{code:grayscale_fast}]
-% import time
-% import skimage
-% from skimage import io
-% import numpy as np
-% import matplotlib.pyplot as plt
-% from skimage import img_as_float32
-% import sys
-% 
-% def process(file):
-%   A = io.imread(file)
-%   (m1,n1) = A.shape
-%   B = A < 10
-%   A[B] = 0
-% 
-% start = time.time()
-% for file in sys.argv[1:]:
-%   process(file)
-% end = time.time()
-% print("total time: "+str(end - start))
-% \end{lstlisting}
-% 
-% (b) What factor speedup would we receive over 1000 images? Please measure it
-% and include your code
-% % --- my answer ---
-% 
-% \begin{lstlisting}[frame=single,language=Bash,caption=Command Line Performance Testing\label{code:performance_grayscale}]
-% gabe@dean:~/CSC-414_Project0$ python3 slow_gry.py dog.png 
-%   grizzlypeakg.png heads.png mona_lisa.png yucca.png 
-% total time: 5.245616674423218
-% gabe@dean:~/CSC-414_Project0$ python3 fast_gry.py dog.png 
-%   grizzlypeakg.png heads.png mona_lisa.png yucca.png 
-% total time: 0.0711512565612793
-% \end{lstlisting}
-% \[
-%   speedup = 5.245616674423218 / 0.0711512565612793
-% \]
-% \[
-%   speedup = 73.724863452
-% \]
-% \newpage
-% (c) Next, we wish to operate on color images. How does your speeded-up version
-% from 1 (a) change for color images? Please implement and measure it, report
-% the speed factor change, and include your code.
-% % --- my answer ---
-% 
-% \begin{lstlisting}[frame=single,language=Python,caption=Slower For Loops with Color Image\label{code:color_slow}]
-% import time
-% import skimage
-% from skimage import io
-% import numpy as np
-% import matplotlib.pyplot as plt
-% from skimage import img_as_float32
-% import sys
-% 
-% def process(file):
-%   A = io.imread(file)
-%   (m1,n1,k1) = A.shape
-%   for i in range(m1):
-%     for j in range(n1):
-%       for k in range(k1):
-%         if A[i,j,k] <= 10 :
-%           A[i,j,k] = 0
-% 
-% start = time.time()
-% for file in sys.argv[1:]:
-%   process(file)
-% end = time.time()
-% print("total time: "+str(end - start))
-% \end{lstlisting}
-% \newpage
-% \begin{lstlisting}[frame=single,language=Python,caption=Logical Indexing with Color Image\label{code:color_fast}]
-% import time
-% import skimage
-% from skimage import io
-% import numpy as np
-% import matplotlib.pyplot as plt
-% from skimage import img_as_float32
-% import sys
-% 
-% def process(file):
-%   A = io.imread(file)
-%   (m1,n1,k1) = A.shape
-%   B = A < 10
-%   A[B] = 0
-%   
-% start = time.time()
-% for file in sys.argv[1:]:
-%   process(file)
-% end = time.time()
-% print("total time: "+str(end - start))
-% \end{lstlisting}
-% 
-% \begin{lstlisting}[frame=single,language=Bash,caption=Command Line Performance Testing\label{code:performance_grayscale}]
-% gabe@dean:~/CSC-414_Project0$ python3 slow_rgb.py grizzlypeak.jpg 
-%   total time: 11.221831321716309
-% gabe@dean:~/CSC-414_Project0$ python3 fast_rgb.py grizzlypeak.jpg 
-% total time: 0.08472013473510742
-%   gabe@dean:~/CSC-414_Project0$ 
-% \end{lstlisting}
-% \[
-%   speedup = 11.221831321716309 / 0.08472013473510742
-% \]
-% \[
-%   speedup = 132.457666135
-% \]
-% We conclude that Color images get more speedup than Grayscale images since 132 is greater than 72.
-% 
-% \newpage
-% \textbf{2. Suppose we wish to reduce the brightness of an image by editing the values in its
-% matrix. But, when trying to visualize the result, we see some “errors”.}
-% 
-% \textbf{(a) What is incorrect with this approach? How can it be fixed while maintaining
-% the same intended brightness reduction? Please include your code and result
-% image.}
-% % --- my answer ---
-% 
-% Errors occur because pixel values have to be in the range [0,255]. When 50
-% is subtracted from pixel values less than 50, the result is a negative value, 
-% which is an error. To prevent this from happening, two separate operations should
-% be performed: 
-%   1) pixels with a value that is less than 50 should be set to zero
-%   2) 50 should be subtracted from pixels with a value that is greater than or equal to 50.
+The main difference between the two filters is the range of frequency that they allow to pass through them.
+A high pass filter passes signals with frequencies that are above a certain threshold.
+A low pass filter passes signals with frequencies that are below a certain threshold.
+Low pass filters can be created by taking an images and removing or subtracting the 
+high-pass signals from it.
 
 \end{document}
 

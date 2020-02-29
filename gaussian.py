@@ -8,6 +8,8 @@ def gauss(r, c, sigma):
   s=2.0*sigma*sigma
   cr=r//2
   cc=c//2
+  if r%2==0: r-=1
+  if c%2==0: c-=1
   sum=0.0
   for i in range(-cr,cr+1):
     for j in range(-cc,cc+1):
@@ -29,7 +31,6 @@ def main():
   arr = gauss(rows,cols,sigma)
   print("Guassian Filter")
   print(arr)
-
 #main()
 
 
