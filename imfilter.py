@@ -10,18 +10,6 @@ import matplotlib.image as mpimg
 from skimage import color
 import cv2
 
-def rgb2gray(A):
-  (a, b, c) = A.shape
-  ret = np.zeros((a, b))
-  for j in range(a):
-    for k in range(b):
-      acc=0
-      for i in range(c):
-        acc+=A[j][k][i]
-      acc/=c
-      ret[j][k]=acc
-  return ret
-
 def imfilter2(A,kernel):
   (mi,ni) = A.shape
   (mk,nk) = kernel.shape

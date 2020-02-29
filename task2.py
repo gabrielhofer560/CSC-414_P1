@@ -18,10 +18,9 @@ import cv2
 def hybrid(F1,F2,sigH,sigL):
   A = io.imread(F1)   # for not color?
   B = io.imread(F2)   # for not color?
-  C = A
   l=imfilter(A, gauss(3,3,sigH))
   h=imfilter(B, gauss(3,3,sigL))
-  A = C
+  A = io.imread(F1)
   l = A-l
   for i in range(h.shape[0]):
     for j in range(h.shape[1]):
