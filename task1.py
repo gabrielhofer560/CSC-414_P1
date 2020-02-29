@@ -20,7 +20,7 @@ def filterFFT(imageMatrix, kernel):
    filteredDFT = shifted * kernel 
    return ifft2(ifftshift(filteredDFT))
 
-def hybrid(F1,F2,sigH,sigL):
+def hybrid1(F1,F2,sigH,sigL):
   l = io.imread(F1)   # for not color?
   h = io.imread(F2)   # for not color?
   n,m=l.shape[0],l.shape[1]
@@ -39,10 +39,10 @@ def hybrid(F1,F2,sigH,sigL):
   return l+h
 
 def main():
-  hyb = hybrid(sys.argv[1],sys.argv[2],1.0,1.0)
+  hyb = hybrid1(sys.argv[1],sys.argv[2],1.0,1.0)
   io.imshow(hyb)
   io.show()
   io.imsave("out.png",hyb)
-main()
+# main()
 
 
