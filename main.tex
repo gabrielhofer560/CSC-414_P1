@@ -68,6 +68,17 @@ A low pass filter passes signals with frequencies that are below a certain thres
 Low pass filters can be created by taking an images and removing or subtracting the 
 high-pass signals from it.
 
+\textbf{Q4: How does computation time vary with filter sizes from 15×15 to 3×3 (for all odd and
+square sizes), and with image sizes from 0.25 MPix to 8 MPix (choose your own intervals)?
+Measure both using scipy’s convolve2d to produce a matrix of values (you should
+generate a 3d surface plot with image size as one axis, kernel size as the other axis, and
+time as the surface). You may use the skimage.rescale function to vary the size of an
+image.}
+
+As the kernel size increases, the amount of time required to perform the convolution 
+also increases. This is because the algorithm to iterate through the kernel 
+has complexity $O(N*M)$ where the kernel dimensions are $N$ by $M$.
+
 \end{document}
 
 
